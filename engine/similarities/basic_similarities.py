@@ -12,7 +12,7 @@ __author__ = 'kun'
 
 
 def find_common_elements(source_preferences, target_preferences):
-    ''' Returns the preferences from both vectors '''
+    """ Returns the preferences from both vectors """
     src = dict(source_preferences)
     tgt = dict(target_preferences)
 
@@ -67,23 +67,23 @@ class UserSimilarity(BaseSimilarity):
         target_preferences = self.model.preferences_from_user(target_id)
 
         if self.model.has_preference_values():
-            source_preferences, target_preferences = \
-                find_common_elements(source_preferences, target_preferences)
+            source_preferences, target_preferences = find_common_elements(source_preferences, target_preferences)
 
         if source_preferences.ndim == 1 and target_preferences.ndim == 1:
             source_preferences = np.asarray([source_preferences])
             target_preferences = np.asarray([target_preferences])
 
         if self.distance == loglikehood_coefficient:
-            return self.distance(self.model.items_count(), \
-                                 source_preferences, target_preferences) \
-                if not source_preferences.shape[1] == 0 and \
-                   not target_preferences.shape[1] == 0 else np.array([[np.nan]])
+            if not source_preferences.shape[1] == 0 and not target_preferences.shape[1] == 0:
+                return self.distance(self.model.items_count(), source_preferences, target_preferences)
+            else:
+                return np.array([[np.nan]])
 
         # evaluate the similarity between the two users vectors.
-        return self.distance(source_preferences, target_preferences) \
-            if not source_preferences.shape[1] == 0 \
-               and not target_preferences.shape[1] == 0 else np.array([[np.nan]])
+        if not source_preferences.shape[1] == 0 and not target_preferences.shape[1] == 0:
+            return self.distance(source_preferences, target_preferences)
+        else:
+            return np.array([[np.nan]])
 
     def get_similarities(self, source_id):
         return [(other_id, self.get_similarity(source_id, other_id)) for other_id, v in self.model]

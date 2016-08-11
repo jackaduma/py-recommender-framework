@@ -10,6 +10,10 @@ __author__ = 'kun'
 
 
 class BaseSimilarity(object):
+    u"""
+    Base Similarity Models.
+    """
+
     def __init__(self, model, distance, num_best=None):
         self.model = model
         self.distance = distance
@@ -30,10 +34,6 @@ class BaseSimilarity(object):
         """
         all_sims = self.get_similarities(source_id)
 
-        # return either all similarities as a list,
-        # or only self.num_best most similar,
-        # depending on settings from the constructor
-
         tops = sorted(all_sims, key=lambda x: -x[1])
 
         if all_sims:
@@ -43,5 +43,4 @@ class BaseSimilarity(object):
             sorted_prefs = np.argsort(-preferences)
             tops = zip(item_ids[sorted_prefs], preferences[sorted_prefs])
 
-        # return at most numBest top 2-tuples (label, sim)
         return tops[:self.num_best] if self.num_best is not None else tops
