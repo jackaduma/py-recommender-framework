@@ -11,11 +11,9 @@ __author__ = 'kun'
 
 class BaseDataModel(object):
     def user_ids(self):
-        '''
-        Returns
-        --------
-        Return all user ids in the model, in order
-        '''
+        u"""
+        :return: Return all user ids in the model, in order
+        """
         raise NotImplementedError("cannot instantiate Abstract Base Class")
 
     def item_ids(self):
