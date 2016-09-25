@@ -155,9 +155,8 @@ class MatrixFactorBasedRecommender(SVDRecommender):
 
     """
 
-    def __init__(self, model, items_selection_strategy=None,
-                 n_features=10, learning_rate=0.01, regularization=0.02, init_mean=0.1,
-                 init_stdev=0.1, n_interations=30, capper=True, with_preference=False):
+    def __init__(self, model, items_selection_strategy=None, n_features=10, learning_rate=0.01, regularization=0.02,
+                 init_mean=0.1, init_stdev=0.1, n_interations=30, capper=True, with_preference=False):
         SVDRecommender.__init__(self, model, with_preference)
         self.capper = capper
         self.n_features = n_features
@@ -181,11 +180,9 @@ class MatrixFactorBasedRecommender(SVDRecommender):
         num_users = self.model.users_count()
         num_items = self.model.items_count()
 
-        self.user_factors = np.empty(shape=(num_users, self.n_features),
-                                     dtype=float)
+        self.user_factors = np.empty(shape=(num_users, self.n_features), dtype=float)
 
-        self.item_factors = np.empty(shape=(num_items, self.n_features),
-                                     dtype=float)
+        self.item_factors = np.empty(shape=(num_items, self.n_features), dtype=float)
 
         '''
         pref_interval = self.model.max_preference() - self.model.min_preference()
@@ -213,8 +210,7 @@ class MatrixFactorBasedRecommender(SVDRecommender):
 
     def _predict(self, user_index, item_index, trailing=True):
         # Compute the scalar product between two rows of two matrices
-        result = self._global_bias + np.sum(self.user_factors[user_index] *
-                                            self.item_factors[item_index])
+        result = self._global_bias + np.sum(self.user_factors[user_index] * self.item_factors[item_index])
         if trailing:
             max_preference = self.model.max_preference()
             min_preference = self.model.min_preference()
@@ -267,8 +263,7 @@ class MatrixFactorBasedRecommender(SVDRecommender):
         for index in range(self.n_interations):
             err = self._train(rating_indices, update_user, update_item)
             rmse = sqrt(err / len(rating_indices))
-            logger.debug("Finished the interation %i with RMSE %f" % \
-                         (index, rmse))
+            logger.debug("Finished the interation %i with RMSE %f" % (index, rmse))
 
     def factorize(self):
         # init factor matrices
@@ -293,8 +288,7 @@ class MatrixFactorBasedRecommender(SVDRecommender):
 
         candidate_items = self.all_other_items(user_id)
 
-        recommendable_items = self._top_matches(user_id, \
-                                                candidate_items, how_many)
+        recommendable_items = self._top_matches(user_id, candidate_items, how_many)
 
         return recommendable_items
 
@@ -331,8 +325,7 @@ class MatrixFactorBasedRecommender(SVDRecommender):
         if self.capper:
             max_p = self.model.maximum_preference_value()
             min_p = self.model.minimum_preference_value()
-            estimated = max_p if estimated > max_p else min_p \
-                if estimated < min_p else estimated
+            estimated = max_p if estimated > max_p else min_p if estimated < min_p else estimated
         return estimated
 
     def all_other_items(self, user_id, **params):
@@ -348,8 +341,7 @@ class MatrixFactorBasedRecommender(SVDRecommender):
         the preference and could possibly be recommended to the user.
 
         '''
-        return self.items_selection_strategy.candidate_items(user_id, \
-                                                             self.model)
+        return self.items_selection_strategy.candidate_items(user_id, self.model)
 
     def _top_matches(self, source_id, target_ids, how_many=None, **params):
         '''
