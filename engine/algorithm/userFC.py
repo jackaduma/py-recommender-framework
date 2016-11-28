@@ -11,7 +11,7 @@ from texttable import Texttable
 __author__ = 'kun'
 
 
-def calcCosDistSpe(user1, user2):
+def calc_cos_dist_spe(user1, user2):
     u"""
     使用 |A&B|/sqrt(|A || B |)计算余弦距离
     :param user1:
@@ -22,11 +22,13 @@ def calcCosDistSpe(user1, user2):
     avg_y = 0.0
     for key in user1:
         avg_x += key[1]
-    avg_x = avg_x / len(user1)
+
+    avg_x /= len(user1)
 
     for key in user2:
         avg_y += key[1]
-    avg_y = avg_y / len(user2)
+
+    avg_y /= len(user2)
 
     u1_u2 = 0.0
     for key1 in user1:
@@ -38,7 +40,7 @@ def calcCosDistSpe(user1, user2):
     return sx_sy
 
 
-def calcCosDist(user1, user2):
+def calc_cos_dist(user1, user2):
     u"""
     计算余弦距离
     :param user1:
@@ -61,7 +63,7 @@ def calcCosDist(user1, user2):
     return sum_xy / sx_sy
 
 
-def calcSimlaryCosDist(user1, user2):
+def calc_simlary_cos_dist(user1, user2):
     u"""
     相似余弦距离
     :param user1:
@@ -75,11 +77,11 @@ def calcSimlaryCosDist(user1, user2):
     avg_y = 0.0
     for key in user1:
         avg_x += key[1]
-    avg_x = avg_x / len(user1)
+    avg_x /= len(user1)
 
     for key in user2:
         avg_y += key[1]
-    avg_y = avg_y / len(user2)
+    avg_y /= len(user2)
 
     for key1 in user1:
         for key2 in user2:
@@ -168,8 +170,8 @@ def calcNearestNeighbor(userid, users_dic, item_dic):
 
     neighbors_dist = []
     for neighbor in neighbors:
-        dist = calcSimlaryCosDist(users_dic[userid],
-                                  users_dic[neighbor])  # calcSimlaryCosDist  calcCosDist calcCosDistSpe
+        dist = calc_simlary_cos_dist(users_dic[userid],
+                                     users_dic[neighbor])  # calc_simlary_cos_dist  calc_cos_dist calc_cos_dist_spe
         neighbors_dist.append([dist, neighbor])
     neighbors_dist.sort(reverse=True)
     # print neighbors_dist
